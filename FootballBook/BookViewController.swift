@@ -83,8 +83,8 @@ class BookViewController: NSViewController, callBackDelegate {
     }
     
     func callbackDelegatefuc(_ backMsg: String) {
-        let str : String! = mInfoText.string
-        mInfoText.string = str + "\n" + backMsg
+//        let str : String! = mInfoText.string
+        mInfoText.string! += (backMsg + "\n")
         mInfoText.scrollRangeToVisible(NSMakeRange((mInfoText.string?.lengthOfBytes(using: String.Encoding.utf8))!, 0))
     }
 
