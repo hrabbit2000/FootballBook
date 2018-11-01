@@ -48,7 +48,7 @@ class BookCellViewController: NSViewController {
         if (true == mStartBookProc) {
             switch mBookProcess.getBookState() {
             case Utils.EBookState.e_logouted:
-                if (hasOverPrepareTriggerTime() || true) {
+                if (hasOverPrepareTriggerTime()) {
                     doLogin()
                 }
                 break
@@ -59,14 +59,21 @@ class BookCellViewController: NSViewController {
                 doConfirmVerifyCode()
                 break
             case Utils.EBookState.e_codeConfirmed:
-                if (hasOverBookTriggerTime() || true) {
+                if (hasOverBookTriggerTime()) {
                     doBook()
                 }
                 break
-            case Utils.EBookState.e_bookFinished:
-                if (Utils.EBookSucessState.e_failed == mBookProcess.getBookResult()) {
-                } else if (Utils.EBookSucessState.e_sucessed == mBookProcess.getBookResult()) {
+            case Utils.EBookState.e_bookFinishing:
+                if (true == mBookProcess.isAllBookingRequestsFinished())
+                {
+                    if (Utils.EBookSucessState.e_failed == mBookProcess.getBookResult()) {
+                        Utils.log("Book Failed !!!")
+                    } else if (Utils.EBookSucessState.e_sucessed == mBookProcess.getBookResult()) {
+                        Utils.log("Book Successfull !!!")
+                    }
                 }
+                break
+            case Utils.EBookState.e_bookFinished:
                 break
             default:
                 break

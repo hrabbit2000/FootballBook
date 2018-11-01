@@ -17,8 +17,20 @@ class BookProcess: NSObject {
     private var mBookParams = ["":""]
     private var mVerifyCode = ""
     private var mTimer = Timer()
+    private var mBookingRequestCount = 0
     
     //api
+    open func isAllBookingRequestsFinished()->Bool {
+        var res = false
+        if (0 == mBookingRequestCount)
+        {
+            mBookState = Utils.EBookState.e_bookFinished
+            res = true
+        }
+        
+        return res
+    }
+
     open func getBookState()->Utils.EBookState {
         return mBookState
     }
@@ -33,6 +45,7 @@ class BookProcess: NSObject {
         mVerifyCode = ""
         mBookParams = ["":""]
         mTimer.invalidate()
+        mBookingRequestCount = 0
     }
     
     private func refreshVerifyImg()->String {
@@ -220,13 +233,20 @@ class BookProcess: NSObject {
     }
     
     func booking(timer: Timer) {
-        let dic = timer.userInfo as! Dictionary<String, Any>
-        let resStr = book(start: dic["start"]! as! Date, duration: dic["duration"] as! Int)
-        if ("" != resStr) {
-            mEBookSucessState = Utils.checkBookSucessState(text: resStr)
-            if (Utils.EBookSucessState.e_continue != mEBookSucessState) {
-                mBookState = Utils.EBookState.e_bookFinished
-                mTimer.invalidate()
+        DispatchQueue.global(qos: .userInitiated).async {
+            let dic = timer.userInfo as! Dictionary<String, Any>
+            self.mBookingRequestCount += 1
+            let resStr = self.book(start: dic["start"]! as! Date, duration: dic["duration"] as! Int)
+            self.mBookingRequestCount -= 1
+            // back to the main thread
+            DispatchQueue.main.async {
+                if ("" != resStr) {
+                    self.mEBookSucessState = Utils.checkBookSucessState(text: resStr)
+                    if (Utils.EBookSucessState.e_continue != self.mEBookSucessState) {
+                        self.mBookState = Utils.EBookState.e_bookFinishing
+                        self.mTimer.invalidate()
+                    }
+                }
             }
         }
     }

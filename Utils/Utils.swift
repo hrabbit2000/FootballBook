@@ -41,6 +41,7 @@ open class Utils : NSObject {
         case e_prepared
         case e_codeConfirmed
         case e_booking
+        case e_bookFinishing
         case e_bookFinished
     }
 
@@ -135,6 +136,7 @@ open class Utils : NSObject {
         let sucessed = "预定成功"
         let unknown = "每张卡同一时间段只能预定一个场地"
         let code_error = "验证码错误"
+        let other_booked = "已被申请"
         if (text.contains(sucessed)) {
             state = EBookSucessState.e_sucessed
         } else if (text.contains(needCntinue)) {
@@ -143,6 +145,8 @@ open class Utils : NSObject {
             state = EBookSucessState.e_unknown
         } else if (text.contains(code_error)) {
             state = EBookSucessState.e_continue
+        } else if (text.contains(other_booked)) {
+            state = EBookSucessState.e_failed
         }
 
         return state
@@ -185,7 +189,7 @@ open class Utils : NSObject {
     open class func getPrepareTriggerTime()->Date {
         if (nil == mPrepareTriggerTime) {
             var dateComp = Calendar.current.dateComponents(in: Calendar.current.timeZone, from: Date())
-            dateComp.hour = 20; dateComp.minute = 57; dateComp.second = 0
+            dateComp.hour = 21; dateComp.minute = 59; dateComp.second = 0
             mPrepareTriggerTime = Calendar.current.date(from: dateComp)
         }
         
@@ -195,7 +199,7 @@ open class Utils : NSObject {
     open class func getBookTriggerTime()->Date {
         if (nil == mBookTriggerTime) {
             var dateComp = Calendar.current.dateComponents(in: Calendar.current.timeZone, from: Date())
-            dateComp.hour = 21; dateComp.minute = 59; dateComp.second = 53
+            dateComp.hour = 21; dateComp.minute = 59; dateComp.second = 45
             mBookTriggerTime = Calendar.current.date(from: dateComp)
         }
         
