@@ -134,15 +134,15 @@ open class Utils : NSObject {
         var state = EBookSucessState.e_failed
         let needCntinue = "天以内的场馆"
         let sucessed = "预定成功"
-        let unknown = "每张卡同一时间段只能预定一个场地"
+        let booked = "一个场地"
         let code_error = "验证码错误"
         let other_booked = "已被申请"
         if (text.contains(sucessed)) {
             state = EBookSucessState.e_sucessed
         } else if (text.contains(needCntinue)) {
             state = EBookSucessState.e_continue
-        } else if (text.contains(unknown)) {
-            state = EBookSucessState.e_unknown
+        } else if (text.contains(booked)) {
+            state = EBookSucessState.e_sucessed
         } else if (text.contains(code_error)) {
             state = EBookSucessState.e_continue
         } else if (text.contains(other_booked)) {
@@ -199,7 +199,7 @@ open class Utils : NSObject {
     open class func getBookTriggerTime()->Date {
         if (nil == mBookTriggerTime) {
             var dateComp = Calendar.current.dateComponents(in: Calendar.current.timeZone, from: Date())
-            dateComp.hour = 21; dateComp.minute = 59; dateComp.second = 45
+            dateComp.hour = 21; dateComp.minute = 59; dateComp.second = 40
             mBookTriggerTime = Calendar.current.date(from: dateComp)
         }
         

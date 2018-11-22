@@ -163,42 +163,45 @@ class BookProcess: NSObject {
     }
     
     private func confirmVerifyCode(start: Date)->Bool {
-        var res = true
-//        let vCode = refreshVerifyImg()
-//        do {
-//            let flags:Set<Calendar.Component> = [Calendar.Component.hour]
-//            let dataComp = Calendar.current.dateComponents(flags, from: start)
-//            var dic = self.mBookParams
-//            dic["rblEndTime"] = "-1:00"
-//            dic["btnSave"] = "预+订"
-//            dic["tbxCode"] = vCode
-//            dic["__LASTFOCUS"] = ""
-//            let opt = try HTTP.POST(g_book_url, parameters: dic)
-//            opt.start { response in
-//                if (nil != response.error) {
-//                    return
-//                }
-//
-//                self.mBookParams = Utils.analyzeViewForm((response.text)!)
-//                if(!Utils.getBookResult(text: response.text!).contains("验证码错误")) {
-//                    self.mVerifyCode = vCode
-//                    res = true;
-//                }
-//            }
-//
-//            opt.waitUntilFinished()
-//
-//        } catch {}
+        var res = false
+        let vCode = refreshVerifyImg()
+        do {
+            let flags:Set<Calendar.Component> = [Calendar.Component.hour]
+            let dataComp = Calendar.current.dateComponents(flags, from: start)
+            var dic = self.mBookParams
+            dic["rblEndTime"] = String.init(format: "%d:00", dataComp.hour! + 1)
+            dic["btnSave"] = "预+订"
+            dic["tbxCode"] = vCode
+            dic["__LASTFOCUS"] = ""
+            let opt = try HTTP.POST(g_book_url, parameters: dic)
+            opt.start { response in
+                if (nil != response.error) {
+                    return
+                }
+
+                let res_text = Utils.getBookResult(text: response.text!)
+                self.mBookParams = Utils.analyzeViewForm((response.text)!)
+                if (res_text != "") {
+                    if(!res_text.contains("验证码错误") || res_text.contains("天以内的场馆")) {
+                        self.mVerifyCode = vCode
+                        res = true;
+                    }
+                } else {
+                    DispatchQueue.main.async(execute: {
+                        Utils.log("verify code error !!!")
+                    });
+                }
+            }
+
+            opt.waitUntilFinished()
+
+        } catch {}
         
         return res
     }
     
     private func book(start: Date, duration: Int)->String {
         var res = ""
-        if (mVerifyCode == "")
-        {
-            mVerifyCode = refreshVerifyImg()
-        }
         do {
             var dic = self.mBookParams
             let flags:Set<Calendar.Component> = [Calendar.Component.hour]
@@ -216,13 +219,6 @@ class BookProcess: NSObject {
                 
                 self.mBookParams = Utils.analyzeViewForm((response.text)!)
                 res = Utils.getBookResult(text: response.text!)
-                if (res.contains("验证码错误"))
-                {
-                    self.mVerifyCode = ""
-                }
-                DispatchQueue.main.async(execute: {
-                    Utils.log(res)
-                });
             }
             
             opt.waitUntilFinished()
@@ -245,6 +241,8 @@ class BookProcess: NSObject {
                     if (Utils.EBookSucessState.e_continue != self.mEBookSucessState) {
                         self.mBookState = Utils.EBookState.e_bookFinishing
                         self.mTimer.invalidate()
+                    } else {
+                        Utils.log(resStr)
                     }
                 }
             }
@@ -284,7 +282,9 @@ class BookProcess: NSObject {
         //posix_spawnp
         mBookState = Utils.EBookState.e_booking
         let dic = ["start":start, "duration":duration] as [String : Any]
-        mTimer = Timer.scheduledTimer(timeInterval: 1.0 / 6, target:self, selector: #selector(BookProcess.booking), userInfo: dic, repeats: true)
+        let randomNumber = arc4random_uniform(15) + 10
+        let interval = Float(randomNumber) / 100.0
+        mTimer = Timer.scheduledTimer(timeInterval: TimeInterval(interval), target:self, selector: #selector(BookProcess.booking), userInfo: dic, repeats: true)
     }
     
 }
