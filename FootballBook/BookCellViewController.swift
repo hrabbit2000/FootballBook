@@ -19,9 +19,10 @@ class BookCellViewController: NSViewController {
     @IBOutlet private var mTriggerBtn: NSButton!
     @IBOutlet private var mDatePicker: NSDatePicker!
     @IBOutlet private var mDurationWidget: NSComboBox!
+    @IBOutlet private var mBookInAdvanceWidget: NSComboBox!
     
     private var mBookProcess = BookProcess()
-    private var mStartBookProc = false
+    private var mBookingImmediately = false
     
     //api
     override func viewDidLoad() {
@@ -36,6 +37,7 @@ class BookCellViewController: NSViewController {
         
         mDatePicker.dateValue = Utils.getDefaultBookDate()
         mDurationWidget.selectItem(at: 1)
+        mBookInAdvanceWidget.selectItem(at: 0)
     }
     
     override var representedObject: Any? {
@@ -45,39 +47,41 @@ class BookCellViewController: NSViewController {
     }
     
     open func update() {
-        if (true == mStartBookProc) {
-            switch mBookProcess.getBookState() {
-            case Utils.EBookState.e_logouted:
-                if (hasOverPrepareTriggerTime()) {
-                    doLogin()
-                }
-                break
-            case Utils.EBookState.e_logined:
-                doPrepare()
-                break
-            case Utils.EBookState.e_prepared:
-                doConfirmVerifyCode()
-                break
-            case Utils.EBookState.e_codeConfirmed:
-                if (hasOverBookTriggerTime()) {
-                    doBook()
-                }
-                break
-            case Utils.EBookState.e_bookFinishing:
-                if (true == mBookProcess.isAllBookingRequestsFinished())
-                {
-                    if (Utils.EBookSucessState.e_failed == mBookProcess.getBookResult()) {
-                        Utils.log("Book Failed !!!")
-                    } else if (Utils.EBookSucessState.e_sucessed == mBookProcess.getBookResult()) {
-                        Utils.log("Book Successfull !!!")
-                    }
-                }
-                break
-            case Utils.EBookState.e_bookFinished:
-                break
-            default:
-                break
+        switch mBookProcess.getBookState() {
+        case Utils.EBookState.e_logouted:
+            if (hasOverPrepareTriggerTime() || mBookingImmediately) {
+                doLogin()
             }
+            break
+        case Utils.EBookState.e_logined:
+            doPrepare()
+            break
+        case Utils.EBookState.e_prepared:
+            doConfirmVerifyCode()
+            break
+        case Utils.EBookState.e_codeConfirmed:
+            if (hasOverBookTriggerTime() || mBookingImmediately) {
+                doBook()
+            }
+            break
+        case Utils.EBookState.e_bookFinishing:
+            if (true == mBookProcess.isAllBookingRequestsFinished())
+            {
+                if (Utils.EBookSucessState.e_failed == mBookProcess.getBookResult()) {
+                    Utils.log("Book Failed !!!")
+                } else if (Utils.EBookSucessState.e_sucessed == mBookProcess.getBookResult()) {
+                    Utils.log("Book Successfull !!!")
+                } else {
+                    Utils.log("Book Finished !!!")
+                }
+                
+                mTriggerBtn.isEnabled = true
+            }
+            break
+        case Utils.EBookState.e_bookFinished:
+            break
+        default:
+            break
         }
     }
 
@@ -96,16 +100,23 @@ class BookCellViewController: NSViewController {
     }
     
     @IBAction func triggerBtnClicked(sender: NSButton) {
-        if (false == mStartBookProc) {
-            sender.title = "Cancel"
-            mStartBookProc = true
+        let start = "Start"
+        let cancel = "Cancel"
+        if (start == sender.title) {
+            sender.title = cancel
+            mBookProcess.reset()
+            Utils.setInAdvanceMins(Int.init(mBookInAdvanceWidget.stringValue)!)
             Utils.log("Starting !!!")
         } else {
-            sender.title = "Start"
-            mStartBookProc = false
-            mBookProcess.reset()
+            sender.title = start
+            mTriggerBtn.isEnabled = false
+            mBookProcess.cancle()
             Utils.log("Canceled !!!")
         }
+    }
+    
+    @IBAction func immediatelyBtnClicked(sender: NSButton) {
+        mBookingImmediately = (sender.state == 1) ? true : false
     }
     
     private func generateBookStartTimeInfo()->String {

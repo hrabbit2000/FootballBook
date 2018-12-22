@@ -60,6 +60,7 @@ open class Utils : NSObject {
     
     
     //data
+    static private var mInAdvanceMins = 1
     static private var mUsers = Dictionary<String, String>()
     static private var mBookTriggerTime: Date!
     static private var mPrepareTriggerTime: Date!
@@ -87,6 +88,9 @@ open class Utils : NSObject {
         return ["__EVENTTARGET": "", "__EVENTARGUMENT": "", "__VIEWSTATE": viewState]
     }
     
+    open class func setInAdvanceMins(_ mins: Int) {
+        mInAdvanceMins = mins
+    }
     
     private class func getStringValue(text: String, key: String)->String {
         var resStr = ""
@@ -189,7 +193,7 @@ open class Utils : NSObject {
     open class func getPrepareTriggerTime()->Date {
         if (nil == mPrepareTriggerTime) {
             var dateComp = Calendar.current.dateComponents(in: Calendar.current.timeZone, from: Date())
-            dateComp.hour = 21; dateComp.minute = 59; dateComp.second = 0
+            dateComp.hour = 21; dateComp.minute = 60 - mInAdvanceMins; dateComp.second = 30
             mPrepareTriggerTime = Calendar.current.date(from: dateComp)
         }
         
@@ -199,7 +203,7 @@ open class Utils : NSObject {
     open class func getBookTriggerTime()->Date {
         if (nil == mBookTriggerTime) {
             var dateComp = Calendar.current.dateComponents(in: Calendar.current.timeZone, from: Date())
-            dateComp.hour = 21; dateComp.minute = 59; dateComp.second = 40
+            dateComp.hour = 21; dateComp.minute = 60 - mInAdvanceMins; dateComp.second = 55
             mBookTriggerTime = Calendar.current.date(from: dateComp)
         }
         

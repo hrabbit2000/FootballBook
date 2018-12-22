@@ -927,11 +927,11 @@ Gw
             <objects>
                 <viewController storyboardIdentifier="BookCellViewController" id="kS9-t9-bQ9" customClass="BookCellViewController" customModule="FootballBook" sceneMemberID="viewController">
                     <view key="view" id="reb-ba-RKh">
-                        <rect key="frame" x="0.0" y="0.0" width="640" height="56"/>
+                        <rect key="frame" x="0.0" y="0.0" width="640" height="70"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <datePicker verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E8T-Ez-tWu">
-                                <rect key="frame" x="6" y="20" width="162" height="27"/>
+                                <rect key="frame" x="6" y="34" width="162" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="bJf-yf-Lgw">
                                     <font key="font" metaFont="system"/>
@@ -944,7 +944,7 @@ Gw
                                 </datePickerCell>
                             </datePicker>
                             <comboBox verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3kR-Xe-8Ip">
-                                <rect key="frame" x="255" y="18" width="144" height="26"/>
+                                <rect key="frame" x="255" y="32" width="144" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="0iB-fe-2Gf">
                                     <font key="font" metaFont="system"/>
@@ -958,7 +958,7 @@ Gw
                                 </comboBoxCell>
                             </comboBox>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e1y-hG-FB5">
-                                <rect key="frame" x="213" y="23" width="41" height="17"/>
+                                <rect key="frame" x="213" y="37" width="41" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="User:" id="xzb-It-2pI">
                                     <font key="font" metaFont="system"/>
@@ -967,7 +967,7 @@ Gw
                                 </textFieldCell>
                             </textField>
                             <comboBox verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h0a-VJ-3C9">
-                                <rect key="frame" x="169" y="18" width="43" height="26"/>
+                                <rect key="frame" x="169" y="32" width="43" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="2" id="faW-Lp-Oma">
                                     <font key="font" metaFont="system"/>
@@ -980,7 +980,7 @@ Gw
                                 </comboBoxCell>
                             </comboBox>
                             <comboBox verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dGl-zq-ffL">
-                                <rect key="frame" x="441" y="17" width="117" height="26"/>
+                                <rect key="frame" x="441" y="31" width="117" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="ym0-ex-OhP">
                                     <font key="font" metaFont="system"/>
@@ -989,7 +989,7 @@ Gw
                                 </comboBoxCell>
                             </comboBox>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qM0-NR-52N">
-                                <rect key="frame" x="398" y="23" width="41" height="17"/>
+                                <rect key="frame" x="398" y="37" width="41" height="17"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Local:" id="u2b-sF-7Lh">
                                     <font key="font" metaFont="system"/>
@@ -998,7 +998,7 @@ Gw
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A9i-NY-oJg">
-                                <rect key="frame" x="557" y="13" width="82" height="32"/>
+                                <rect key="frame" x="557" y="27" width="82" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <buttonCell key="cell" type="push" title="Start" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="7jt-or-k1k">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1008,18 +1008,70 @@ Gw
                                     <action selector="triggerBtnClickedWithSender:" target="kS9-t9-bQ9" id="voh-HE-pqS"/>
                                 </connections>
                             </button>
+                            <comboBox verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GGK-Fi-EiN">
+                                <rect key="frame" x="169" y="-1" width="65" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="2" id="mqT-wI-AjK">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <objectValues>
+                                        <string>1</string>
+                                        <string>2</string>
+                                        <string>3</string>
+                                        <string>4</string>
+                                        <string>5</string>
+                                        <string>6</string>
+                                        <string>7</string>
+                                        <string>8</string>
+                                        <string>9</string>
+                                        <string>10</string>
+                                    </objectValues>
+                                </comboBoxCell>
+                            </comboBox>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iGM-lK-rqf">
+                                <rect key="frame" x="9" y="5" width="146" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Do booking in advance:" id="2rR-kV-Qke">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qkc-kp-BO3">
+                                <rect key="frame" x="237" y="5" width="41" height="17"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="mins" id="zqP-A3-2Iq">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7LB-cN-SEl">
+                                <rect key="frame" x="486" y="5" width="149" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="Booking Immediately" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Vuv-SH-Yvc">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="immediatelyBtnClickedWithSender:" target="kS9-t9-bQ9" id="XvY-cJ-cKz"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <connections>
+                        <outlet property="mBookInAdvanceWidget" destination="GGK-Fi-EiN" id="vg6-MB-TLX"/>
                         <outlet property="mDatePicker" destination="E8T-Ez-tWu" id="O9C-wD-0Pk"/>
                         <outlet property="mDurationWidget" destination="h0a-VJ-3C9" id="n6f-T9-AzV"/>
                         <outlet property="mLocalListWidget" destination="dGl-zq-ffL" id="acW-yO-OdK"/>
+                        <outlet property="mTriggerBtn" destination="A9i-NY-oJg" id="ED0-Qv-Xz6"/>
                         <outlet property="mUserListWidget" destination="3kR-Xe-8Ip" id="vAr-9c-fvd"/>
                     </connections>
                 </viewController>
                 <customObject id="iLg-vr-Bf8" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="241" y="2157"/>
+            <point key="canvasLocation" x="241" y="2164"/>
         </scene>
     </scenes>
 </document>

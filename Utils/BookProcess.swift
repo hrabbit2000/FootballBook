@@ -12,7 +12,7 @@ import Foundation
 class BookProcess: NSObject {
 
     //data
-    private var mBookState = Utils.EBookState.e_logouted
+    private var mBookState = Utils.EBookState.e_bookFinished
     private var mEBookSucessState = Utils.EBookSucessState.e_unknown
     private var mBookParams = ["":""]
     private var mVerifyCode = ""
@@ -38,13 +38,18 @@ class BookProcess: NSObject {
     open func getBookResult()->Utils.EBookSucessState {
         return mEBookSucessState
     }
-
+ 
+    open func cancle() {
+        mTimer.invalidate()
+        mEBookSucessState = Utils.EBookSucessState.e_unknown
+        mBookState = Utils.EBookState.e_bookFinishing
+    }
+    
     open func reset() {
         mBookState = Utils.EBookState.e_logouted
         mEBookSucessState = Utils.EBookSucessState.e_unknown
         mVerifyCode = ""
         mBookParams = ["":""]
-        mTimer.invalidate()
         mBookingRequestCount = 0
     }
     
@@ -282,7 +287,7 @@ class BookProcess: NSObject {
         //posix_spawnp
         mBookState = Utils.EBookState.e_booking
         let dic = ["start":start, "duration":duration] as [String : Any]
-        let randomNumber = arc4random_uniform(15) + 10
+        let randomNumber = arc4random_uniform(15) + 15
         let interval = Float(randomNumber) / 100.0
         mTimer = Timer.scheduledTimer(timeInterval: TimeInterval(interval), target:self, selector: #selector(BookProcess.booking), userInfo: dic, repeats: true)
     }
