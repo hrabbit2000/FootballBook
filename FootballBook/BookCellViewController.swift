@@ -138,7 +138,7 @@ class BookCellViewController: NSViewController {
     }
     
     private func doConfirmVerifyCode() {
-        if (mBookProcess.doConfirmVerifyCode(start: mDatePicker.dateValue)) {
+        if (mBookProcess.doConfirmVerifyCode(start: mDatePicker.dateValue, duration: Int.init(mDurationWidget.stringValue)!)) {
             Utils.log("Confirm verify code finished !!!")
         }
     }

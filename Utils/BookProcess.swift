@@ -167,14 +167,14 @@ class BookProcess: NSObject {
         return res
     }
     
-    private func confirmVerifyCode(start: Date)->Bool {
+    private func confirmVerifyCode(start: Date, duration: Int)->Bool {
         var res = false
         let vCode = refreshVerifyImg()
         do {
             let flags:Set<Calendar.Component> = [Calendar.Component.hour]
             let dataComp = Calendar.current.dateComponents(flags, from: start)
             var dic = self.mBookParams
-            dic["rblEndTime"] = String.init(format: "%d:00", dataComp.hour! + 1)
+            dic["rblEndTime"] = String.init(format: "%d:00", dataComp.hour! + duration)
             dic["btnSave"] = "预+订"
             dic["tbxCode"] = vCode
             dic["__LASTFOCUS"] = ""
@@ -275,8 +275,8 @@ class BookProcess: NSObject {
         return Utils.EBookState.e_prepared == mBookState
     }
     
-    open func doConfirmVerifyCode(start: Date)->Bool {
-        if (true == confirmVerifyCode(start: start)) {
+    open func doConfirmVerifyCode(start: Date, duration: Int)->Bool {
+        if (true == confirmVerifyCode(start: start, duration: duration)) {
             mBookState = Utils.EBookState.e_codeConfirmed
         }
         
