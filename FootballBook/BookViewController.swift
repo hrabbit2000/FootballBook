@@ -17,12 +17,16 @@ class BookViewController: NSViewController, callBackDelegate {
     @IBOutlet var mInfoText: NSTextView!
     private var mControllers = [NSViewController]()
     private var mTimer: Timer = Timer()
+    private var mLogText: String = String("")
     //api
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         createOneCellCtl()
         Utils.setLogDelegate(self)
+        HTTP.globalRequest { req in
+            req.timeoutInterval = 6
+        }
     }
     
     override func viewWillAppear() {
@@ -69,6 +73,7 @@ class BookViewController: NSViewController, callBackDelegate {
     private func maiLoop() {
         
         updateShowTime()
+        updateLogView()
         
         for ctl in mControllers {
             if (ctl.isKind(of: BookCellViewController.self)) {
@@ -82,10 +87,22 @@ class BookViewController: NSViewController, callBackDelegate {
         mShowTimeWidget.stringValue = String.init(format: "%02ld : %02ld : %02ld", dateComp.hour!, dateComp.minute!, dateComp.second!);
     }
     
+    var count = 0;
+    private func updateLogView() {
+        
+        self.count += 1
+        
+        if (self.count % 4 == 0) {
+            mInfoText.string! = mLogText
+            mInfoText.scrollRangeToVisible(NSMakeRange((mInfoText.string?.lengthOfBytes(using: String.Encoding.utf8))!, 0))
+            
+            self.count = 0
+        }
+    }
+    
     func callbackDelegatefuc(_ backMsg: String) {
+        mLogText += (backMsg + "\n")
 //        let str : String! = mInfoText.string
-        mInfoText.string! += (backMsg + "\n")
-        mInfoText.scrollRangeToVisible(NSMakeRange((mInfoText.string?.lengthOfBytes(using: String.Encoding.utf8))!, 0))
     }
 
 }

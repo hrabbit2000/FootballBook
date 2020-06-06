@@ -9,13 +9,13 @@
 import Foundation
 import Cocoa
 
-let g_login_url = "http://www.jdty.gov.cn/JdSportBureau_new/Yikatong/HtmlHelper/NewLoginHandler.ashx"
-let g_book_center_url = "http://www.jdty.gov.cn/JdSportBureau_new/Yikatong/NewBookingCenter.aspx"
-let g_book_stadium_url = "http://www.jdty.gov.cn/JdSportBureau_new/Yikatong/NewBookingIndex.aspx"
-let g_book_url = "http://www.jdty.gov.cn/JdSportBureau_new/Yikatong/BookingSheet.aspx"
-let g_book_image_url = "http://www.jdty.gov.cn/JdSportBureau_new/Yikatong/GetImage.aspx"
-let g_book_list_rec = "http://www.jdty.gov.cn/JdSportBureau_new/Yikatong/HtmlHelper/GetRecordsList.ashx"
-let g_book_detail_rec = "http://www.jdty.gov.cn/JdSportBureau_new/Yikatong/BookingDetail.aspx"
+let g_login_url         = "http://www.jiadingsports.com/JdSportBureau_new/Yikatong/HtmlHelper/NewLoginHandler.ashx"
+let g_book_center_url   = "http://www.jiadingsports.com/JdSportBureau_new/Yikatong/NewBookingCenter.aspx"
+let g_book_stadium_url  = "http://www.jiadingsports.com/JdSportBureau_new/Yikatong/NewBookingIndex.aspx"
+let g_book_url          = "http://www.jiadingsports.com/JdSportBureau_new/Yikatong/BookingSheet.aspx"
+let g_book_image_url    = "http://www.jiadingsports.com/JdSportBureau_new/Yikatong/GetImage.aspx"
+let g_book_list_rec     = "http://www.jiadingsports.com/JdSportBureau_new/Yikatong/HtmlHelper/GetRecordsList.ashx"
+let g_book_detail_rec   = "http://www.jiadingsports.com/JdSportBureau_new/Yikatong/BookingDetail.aspx"
 
 
 //定义协议
@@ -203,7 +203,7 @@ open class Utils : NSObject {
     open class func getBookTriggerTime()->Date {
         if (nil == mBookTriggerTime) {
             var dateComp = Calendar.current.dateComponents(in: Calendar.current.timeZone, from: Date())
-            dateComp.hour = 21; dateComp.minute = 60 - mInAdvanceMins; dateComp.second = 55
+            dateComp.hour = 21; dateComp.minute = 60 - mInAdvanceMins; dateComp.second = 56
             mBookTriggerTime = Calendar.current.date(from: dateComp)
         }
         

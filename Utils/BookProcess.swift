@@ -247,7 +247,9 @@ class BookProcess: NSObject {
                         self.mBookState = Utils.EBookState.e_bookFinishing
                         self.mTimer.invalidate()
                     } else {
-                        Utils.log(resStr)
+                        var str = resStr + " " + String(self.mBookingRequestCount)
+                        Utils.log(str)
+//                        print("%s", str)
                     }
                 }
             }
@@ -287,7 +289,7 @@ class BookProcess: NSObject {
         //posix_spawnp
         mBookState = Utils.EBookState.e_booking
         let dic = ["start":start, "duration":duration] as [String : Any]
-        let randomNumber = arc4random_uniform(15) + 15
+        let randomNumber = 7 + arc4random_uniform(5)
         let interval = Float(randomNumber) / 100.0
         mTimer = Timer.scheduledTimer(timeInterval: TimeInterval(interval), target:self, selector: #selector(BookProcess.booking), userInfo: dic, repeats: true)
     }
