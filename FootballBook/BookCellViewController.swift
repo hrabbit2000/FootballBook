@@ -29,7 +29,11 @@ class BookCellViewController: NSViewController {
         super.viewDidLoad()
         mUserListWidget.removeAllItems()
         mUserListWidget.addItems(withObjectValues: Utils.allUsers())
-        mUserListWidget.selectItem(at: 0)
+        mUserListWidget.selectItem(at: 2)
+        if (Utils.allUsers().count > 2)
+        {
+            mUserListWidget.selectItem(at: 2)
+        }
         
         mLocalListWidget.removeAllItems()
         mLocalListWidget.addItems(withObjectValues: Utils.allLocals())
@@ -64,6 +68,9 @@ class BookCellViewController: NSViewController {
                 doBook()
             }
             break
+        case Utils.EBookState.e_booking:
+            updateBookingStatus();
+            break;
         case Utils.EBookState.e_bookFinishing:
             if (true == mBookProcess.isAllBookingRequestsFinished())
             {
@@ -76,6 +83,7 @@ class BookCellViewController: NSViewController {
                 }
                 
                 mTriggerBtn.isEnabled = true
+                mTriggerBtn.title = "Start"
             }
             break
         case Utils.EBookState.e_bookFinished:
@@ -85,6 +93,22 @@ class BookCellViewController: NSViewController {
         }
     }
 
+    var last_str:String = "Booking ."
+    private func updateBookingStatus() {
+        Utils.log(last_str)
+        if (last_str == "Booking .") {
+            last_str = "Booking .."
+        } else if (last_str == "Booking ..") {
+            last_str = "Booking ..."
+        } else if (last_str == "Booking ...") {
+            last_str = "Booking ...."
+        } else if (last_str == "Booking ....") {
+            last_str = "Booking ....."
+        } else if (last_str == "Booking .....") {
+            last_str = "Booking ."
+        }
+    }
+    
     private func hasOverPrepareTriggerTime()-> Bool {
         if (Date().compare(Utils.getPrepareTriggerTime()) != ComparisonResult.orderedAscending) {
             return true

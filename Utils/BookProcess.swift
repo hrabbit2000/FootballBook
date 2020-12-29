@@ -22,7 +22,7 @@ class BookProcess: NSObject {
     //api
     open func isAllBookingRequestsFinished()->Bool {
         var res = false
-        if (0 == mBookingRequestCount)
+        if (Utils.EBookSucessState.e_continue != mEBookSucessState)
         {
             mBookState = Utils.EBookState.e_bookFinished
             res = true
@@ -205,7 +205,7 @@ class BookProcess: NSObject {
         return res
     }
     
-    private func book(start: Date, duration: Int)->String {
+    private func book(start: Date, duration: Int) {
         var res = ""
         do {
             var dic = self.mBookParams
@@ -224,35 +224,29 @@ class BookProcess: NSObject {
                 
                 self.mBookParams = Utils.analyzeViewForm((response.text)!)
                 res = Utils.getBookResult(text: response.text!)
+                if ("" != res) {
+                    self.mEBookSucessState = Utils.checkBookSucessState(text: res)
+                    if (Utils.EBookSucessState.e_continue != self.mEBookSucessState) {
+                        self.mBookState = Utils.EBookState.e_bookFinishing
+                        self.mTimer.invalidate()
+                    } else {
+                        let str = res + " " + String(self.mBookingRequestCount)
+                        Utils.log(str)
+                    }
+                }
             }
             
-            opt.waitUntilFinished()
+            //opt.waitUntilFinished()
             
         } catch {}
-        
-        return res
     }
     
     func booking(timer: Timer) {
         DispatchQueue.global(qos: .userInitiated).async {
             let dic = timer.userInfo as! Dictionary<String, Any>
             self.mBookingRequestCount += 1
-            let resStr = self.book(start: dic["start"]! as! Date, duration: dic["duration"] as! Int)
+            self.book(start: dic["start"]! as! Date, duration: dic["duration"] as! Int)
             self.mBookingRequestCount -= 1
-            // back to the main thread
-            DispatchQueue.main.async {
-                if ("" != resStr) {
-                    self.mEBookSucessState = Utils.checkBookSucessState(text: resStr)
-                    if (Utils.EBookSucessState.e_continue != self.mEBookSucessState) {
-                        self.mBookState = Utils.EBookState.e_bookFinishing
-                        self.mTimer.invalidate()
-                    } else {
-                        var str = resStr + " " + String(self.mBookingRequestCount)
-                        Utils.log(str)
-//                        print("%s", str)
-                    }
-                }
-            }
         }
     }
     
@@ -289,7 +283,7 @@ class BookProcess: NSObject {
         //posix_spawnp
         mBookState = Utils.EBookState.e_booking
         let dic = ["start":start, "duration":duration] as [String : Any]
-        let randomNumber = 7 + arc4random_uniform(5)
+        let randomNumber = 5 + arc4random_uniform(5)
         let interval = Float(randomNumber) / 100.0
         mTimer = Timer.scheduledTimer(timeInterval: TimeInterval(interval), target:self, selector: #selector(BookProcess.booking), userInfo: dic, repeats: true)
     }

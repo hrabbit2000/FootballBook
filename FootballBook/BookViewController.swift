@@ -18,6 +18,7 @@ class BookViewController: NSViewController, callBackDelegate {
     private var mControllers = [NSViewController]()
     private var mTimer: Timer = Timer()
     private var mLogText: String = String("")
+    private var mLock: Int = 0
     //api
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,15 +94,35 @@ class BookViewController: NSViewController, callBackDelegate {
         self.count += 1
         
         if (self.count % 4 == 0) {
+            objc_sync_enter(mLock)
             mInfoText.string! = mLogText
+            objc_sync_exit(mLock)
             mInfoText.scrollRangeToVisible(NSMakeRange((mInfoText.string?.lengthOfBytes(using: String.Encoding.utf8))!, 0))
             
             self.count = 0
         }
     }
     
+    private func remove_string(_ sub: String) {
+        if let range = mLogText.range(of:sub, options: .backwards) {
+            if !range.isEmpty {
+                mLogText.removeSubrange(range)
+            }
+        }
+    }
+    
     func callbackDelegatefuc(_ backMsg: String) {
+        objc_sync_enter(mLock)
+        let sub = "Booking"
+        if (backMsg.contains(sub)) {
+            remove_string("Booking .....\n")
+            remove_string("Booking ....\n")
+            remove_string("Booking ...\n")
+            remove_string("Booking ..\n")
+            remove_string("Booking .\n")
+        }
         mLogText += (backMsg + "\n")
+        objc_sync_exit(mLock)
 //        let str : String! = mInfoText.string
     }
 
