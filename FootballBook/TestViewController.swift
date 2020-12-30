@@ -216,7 +216,7 @@ class TestViewController: NSViewController {
                 let data = NSData.init(data: imgData)
                 data.write(toFile: savePath, atomically: false)
                 let str:String! = [ImgRecBridger .getString(savePath)][0]
-                if (4 == str.characters.count) {
+                if (4 == str.count) {
                     vCode = str
                     succ = true;
                 }

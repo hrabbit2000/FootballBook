@@ -140,7 +140,7 @@ class BookCellViewController: NSViewController {
     }
     
     @IBAction func immediatelyBtnClicked(sender: NSButton) {
-        mBookingImmediately = (sender.state == 1) ? true : false
+        mBookingImmediately = (sender.state.rawValue == 1) ? true : false
     }
     
     private func generateBookStartTimeInfo()->String {

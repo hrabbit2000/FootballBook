@@ -262,7 +262,7 @@ open class HTTP: Operation {
 		}
 		set(newState) {
 			willChangeValue(forKey: "state")
-			stateLock.withCriticalScope { Void -> Void in
+			stateLock.withCriticalScope { () -> Void in
 				guard _state != .finished else {
 					print("Invalid! - Attempted to back out of Finished State")
 					return
@@ -277,7 +277,7 @@ open class HTTP: Operation {
     /**
     creates a new HTTP request.
     */
-    public init(_ req: URLRequest, session: URLSession = SharedSession.defaultSession, isDownload: Bool = false) {
+    public init(_ req: URLRequest, session: URLSession = SharedSessionSH.defaultSession, isDownload: Bool = false) {
         super.init()
         if isDownload {
             task = session.downloadTask(with: req)
@@ -483,9 +483,9 @@ private func ==(lhs: HTTP.State, rhs: HTTP.State) -> Bool {
 
 // Lock for getting / setting state safely
 extension NSLock {
-	func withCriticalScope<T>(_ block: (Void) -> T) -> T {
+    func withCriticalScope<T>(_ block: () -> T) -> T {
 		lock()
-		let value = block()
+        let value = block()
 		unlock()
 		return value
 	}
@@ -641,9 +641,9 @@ class DelegateManager: NSObject, URLSessionDataDelegate, URLSessionDownloadDeleg
 /**
 Handles providing singletons of NSURLSession.
 */
-class SharedSession {
-    static let defaultSession = URLSession(configuration: URLSessionConfiguration.default,
+open class SharedSessionSH {
+    public static let defaultSession = URLSession(configuration: URLSessionConfiguration.default,
         delegate: DelegateManager.sharedInstance, delegateQueue: nil)
-    static let ephemeralSession = URLSession(configuration: URLSessionConfiguration.ephemeral,
+    public static let ephemeralSession = URLSession(configuration: URLSessionConfiguration.ephemeral,
         delegate: DelegateManager.sharedInstance, delegateQueue: nil)
 }

@@ -69,7 +69,7 @@ class BookProcess: NSObject {
                 let data = NSData.init(data: imgData)
                 data.write(toFile: savePath, atomically: false)
                 let str:String! = [ImgRecBridger .getString(savePath)][0]
-                if (4 == str.characters.count) {
+                if (4 == str.count) {
                     vCode = str
                     succ = true
                 }
@@ -241,7 +241,7 @@ class BookProcess: NSObject {
         } catch {}
     }
     
-    func booking(timer: Timer) {
+    @objc func booking(timer: Timer) {
         DispatchQueue.global(qos: .userInitiated).async {
             let dic = timer.userInfo as! Dictionary<String, Any>
             self.mBookingRequestCount += 1

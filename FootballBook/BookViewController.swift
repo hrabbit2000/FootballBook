@@ -95,9 +95,9 @@ class BookViewController: NSViewController, callBackDelegate {
         
         if (self.count % 4 == 0) {
             objc_sync_enter(mLock)
-            mInfoText.string! = mLogText
+            mInfoText.string = mLogText
             objc_sync_exit(mLock)
-            mInfoText.scrollRangeToVisible(NSMakeRange((mInfoText.string?.lengthOfBytes(using: String.Encoding.utf8))!, 0))
+            mInfoText.scrollRangeToVisible(NSMakeRange((mInfoText.string.lengthOfBytes(using: String.Encoding.utf8)), 0))
             
             self.count = 0
         }
